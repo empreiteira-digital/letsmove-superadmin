@@ -1,15 +1,19 @@
 <template>
   <div>
-    <h1>BoilerPlate em Vue3 com PrimeVue {{ exampleData }}</h1>
+    <Dashboard />
   </div>
 </template>
 
 <script>
 import { mapStores } from 'pinia';
 import useExampleStore from '@/stores/ExampleStore';
+import Dashboard from '@/components/dashboard.vue';
 
 export default {
   name: 'ExampleApp',
+  components: {
+    Dashboard,
+  },
   data() {
     return {
       exampleData: '123',
