@@ -5,22 +5,12 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia';
-import useExampleStore from '@/stores/ExampleStore';
 import Dashboard from '@/components/dashboard.vue';
 
 export default {
-  name: 'ExampleApp',
+  name: 'SuperAdmin',
   components: {
     Dashboard,
-  },
-  data() {
-    return {
-      exampleData: '123',
-    };
-  },
-  computed: {
-    ...mapStores(useExampleStore),
   },
 };
 

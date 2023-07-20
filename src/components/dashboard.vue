@@ -35,7 +35,7 @@
                     class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-bookmark mr-2" />
-                    <span class="font-medium">Clientes</span>
+                    <router-link to="/professionals"><span class="font-medium">Clientes</span></router-link>
                   </a>
                 </li>
                 <li>
@@ -121,19 +121,8 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia';
-import useExampleStore from '@/stores/ExampleStore';
-
 export default {
-  name: 'ExampleApp',
-  data() {
-    return {
-      exampleData: '123',
-    };
-  },
-  computed: {
-    ...mapStores(useExampleStore),
-  },
+  name: 'DashBoard',
 };
 
 </script>
