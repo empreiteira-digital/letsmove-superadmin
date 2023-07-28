@@ -1,16 +1,38 @@
 <template>
   <div>
-    <Dashboard />
+    <Menubar
+      class="mb-5"
+      :model="navItems"
+    >
+      <template #start>
+        <router-link to="/">
+          <img
+            alt="logo"
+            src="./images/logo.png"
+            height="24"
+            class="mr-2"
+          >
+        </router-link>
+      </template>
+    </Menubar>
+    <router-view />
   </div>
 </template>
 
 <script>
-import Dashboard from '@/components/dashboard.vue';
 
 export default {
   name: 'SuperAdmin',
-  components: {
-    Dashboard,
+  data() {
+    return {
+      navItems: [
+        {
+          label: 'Usuários',
+          icon: 'pi pi-fw pi-user',
+          to: '/professionals',
+        },
+      ],
+    };
   },
 };
 

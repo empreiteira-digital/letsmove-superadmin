@@ -1,6 +1,14 @@
 <template>
   <div>
+    <h2>Profissionais</h2>
+    <ProgressBar
+      v-if="ProfessionalsStore.isLoading"
+      mode="indeterminate"
+      style="height: 6px"
+    />
+
     <DataTable
+      v-else
       ref="professionals"
       striped-rows
       show-gridlines
@@ -8,27 +16,48 @@
       removable-sort
       sort-mode="multiple"
       :value="ProfessionalsStore.professionals"
+      table-style="min-width: 50rem"
+      paginator
+      :rows="10"
+      :rows-per-page-options="[10, 20, 30, 40, 50]"
+      :loading="ProfessionalsStore.isLoading"
     >
-      <template #header>
-        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-          <span class="text-xl text-900 font-bold">Professionals</span>
-        </div>
-      </template>
       <Column
         field="name"
-        header="Name"
+        header="Nome"
+        style="width: 70%"
+        sortable
       />
       <Column
         field="professionalPlan.planName"
         header="Plano"
+        style="width: 18%"
+        sortable
       />
       <Column
         field="professionalPlan.active"
         header="Status"
-      />
+        style="width: 5%; text-align: center;"
+        sortable
+      >
+        <template #body="slotProps">
+          <i
+            v-if="slotProps.data.professionalPlan.active"
+            class="pi pi-check-circle"
+            style="color: green"
+          />
+          <i
+            v-else
+            class="pi pi-times-circle"
+            style="color: red"
+          />
+        </template>
+      </Column>
       <Column
         field="rating"
-        header="Reviews"
+        header="Avaliações"
+        style="width: 5%; text-align: center;"
+        sortable
       >
         <template #body="slotProps">
           <Rating
@@ -40,6 +69,8 @@
       </Column>
       <Column
         header="Cadastrado em"
+        style="width: 10%; text-align: center;"
+        sortable
       >
         <template #body="slotProps">
           {{ formatDate(slotProps.data.createdAt) }}
