@@ -1,11 +1,15 @@
+<!-- eslint-disable vue/no-v-model-argument -->
 <template>
   <div>
-    <h2>Profissionais</h2>
-    <ProgressBar
-      v-if="ProfessionalsStore.isLoading"
-      mode="indeterminate"
-      style="height: 6px"
-    />
+    <div v-if="ProfessionalsStore.isLoading">
+      <h2>
+        Profissionais
+      </h2>
+      <ProgressBar
+        mode="indeterminate"
+        style="height: 6px"
+      />
+    </div>
 
     <DataTable
       v-else
@@ -19,30 +23,48 @@
       table-style="min-width: 50rem"
       paginator
       :rows="10"
-      :rows-per-page-options="[10, 20, 30, 40, 50]"
       :loading="ProfessionalsStore.isLoading"
+      v-model:expandedRows="expandedRows"
+      paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      :rows-per-page-options="[10, 20, 30, 40, 50]"
+      current-page-report-template="Mostrando {first} de {last} do total de {totalRecords} profissionais"
     >
+      <template #header>
+        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+          <span class="text-xl text-900 font-bold">Profissionais</span>
+          <Button
+            @click="ProfessionalsStore.getProfessionals"
+            icon="pi pi-refresh"
+            rounded
+            raised
+          />
+        </div>
+      </template>
       <Column
-        field="name"
+        expander
+        style="width: 5rem"
+      />
+      <Column
+        field="professional.name"
         header="Nome"
-        style="width: 70%"
+        style="width: 52%"
         sortable
       />
       <Column
-        field="professionalPlan.planName"
+        field="professional.professionalPlan.planName"
         header="Plano"
         style="width: 18%"
         sortable
       />
       <Column
-        field="professionalPlan.active"
+        field="professional.professionalPlan.active"
         header="Status"
         style="width: 5%; text-align: center;"
         sortable
       >
         <template #body="slotProps">
           <i
-            v-if="slotProps.data.professionalPlan.active"
+            v-if="slotProps.data.professional.professionalPlan.active"
             class="pi pi-check-circle"
             style="color: green"
           />
@@ -54,14 +76,14 @@
         </template>
       </Column>
       <Column
-        field="rating"
+        field="professional.rating"
         header="Avaliações"
         style="width: 5%; text-align: center;"
         sortable
       >
         <template #body="slotProps">
           <Rating
-            :model-value="slotProps.data.rating"
+            :model-value="slotProps.data.professional.rating"
             readonly
             :cancel="false"
           />
@@ -73,9 +95,48 @@
         sortable
       >
         <template #body="slotProps">
-          {{ formatDate(slotProps.data.createdAt) }}
+          {{ formatDate(slotProps.data.professional.createdAt) }}
         </template>
       </Column>
+      <Column
+        header="Ações"
+        style="width: 10%; text-align: center;"
+      >
+        <template #body>
+          <Button
+            disabled="true"
+            icon="pi pi-user-edit"
+            outlined
+            rounded
+            class="mr-2"
+          />
+          <Button
+            disabled="true"
+            icon="pi pi-file-edit"
+            outlined
+            rounded
+            class="mr-2"
+          />
+          <Button
+            disabled="true"
+            icon="pi pi-external-link"
+            outlined
+            rounded
+            class="mr-2"
+          />
+        </template>
+      </Column>
+      <template #expansion="slotProps">
+        <div>
+          <p><b>Nome:</b> {{ slotProps.data.professional.name }}</p>
+          <p><b>Plano:</b> {{ slotProps.data.professional.professionalPlan.planName }}</p>
+          <p><b>CPF:</b> {{ GlobalStore.cpf(slotProps.data.cpf) }}</p>
+          <p><b>CNPJ:</b> {{ GlobalStore.cnpj(slotProps.data.professional.cnpj) }}</p>
+          <p><b>Número de Registro:</b> {{ slotProps.data.professional.registerNumber || 'N/A' }}</p>
+          <p><b>E-mail:</b> {{ slotProps.data.email }}</p>
+          <p><b>Telefone:</b> {{ GlobalStore.telefone(slotProps.data.professional.phone) }}</p>
+        </div>
+      </template>
     </DataTable>
   </div>
 </template>
@@ -83,9 +144,15 @@
 <script>
 import { mapStores } from 'pinia';
 import useProfessionalsStore from '@/stores/ProfessionalsStore';
+import useGlobalStore from '@/stores/GlobalStore';
 
 export default {
   name: 'ProfessionalsView',
+  data() {
+    return {
+      expandedRows: [],
+    };
+  },
   async created() {
     await this.ProfessionalsStore.getProfessionals();
   },
@@ -102,6 +169,7 @@ export default {
   },
   computed: {
     ...mapStores(useProfessionalsStore),
+    ...mapStores(useGlobalStore),
   },
 };
 
