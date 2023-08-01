@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const professionalsInstance = axios.create({ baseURL: import.meta.env.VITE_LM_SERVER2_URL });
+const professionalsInstance = axios.create({ baseURL: import.meta.env.VITE_LM_BACKEND_URL });
 
 const getProfessionals = () => professionalsInstance.get(
   '/professionals/superadmin',
