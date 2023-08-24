@@ -1,22 +1,46 @@
 import { defineStore } from 'pinia';
-import getProfessionals from '@/api/Professionals';
+import { findProfessionals, findProfessionalById, findUserById } from '@/api/SuperAdmin';
 
 const useProfessionalsStore = defineStore('Professionals', {
   // Data
   state: () => ({
     professionals: [],
-    isLoading: false,
+    professionalInfo: {},
+    userInfo: {},
+    isLoadingProfessionals: false,
+    isLoadingProfessional: true,
+    isLoadingUser: true,
   }),
   // Methods
   actions: {
     async getProfessionals() {
       try {
-        this.isLoading = true;
-        this.professionals = await getProfessionals();
+        this.isLoadingProfessionals = true;
+        this.professionals = await findProfessionals();
       } catch (e) {
         console.error(e);
       } finally {
-        this.isLoading = false;
+        this.isLoadingProfessionals = false;
+      }
+    },
+    async getProfessionalById(id) {
+      try {
+        this.isLoadingProfessional = true;
+        this.professionalInfo = await findProfessionalById(id);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isLoadingProfessional = false;
+      }
+    },
+    async getUserById(id) {
+      try {
+        this.isLoadingUser = true;
+        this.userInfo = await findUserById(id);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isLoadingUser = false;
       }
     },
   },

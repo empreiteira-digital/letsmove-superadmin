@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-v-model-argument -->
 <template>
   <div>
-    <div v-if="ProfessionalsStore.isLoading">
+    <div v-if="ProfessionalsStore.isLoadingProfessionals">
       <h2>
         Profissionais
       </h2>
@@ -91,7 +91,7 @@
       </Column>
       <Column
         header="Cadastrado em"
-        style="width: 10%; text-align: center;"
+        style="width: 5%; text-align: center;"
         sortable
       >
         <template #body="slotProps">
@@ -100,11 +100,11 @@
       </Column>
       <Column
         header="Ações"
-        style="width: 10%; text-align: center;"
+        style="width: 15%; text-align: center;"
       >
-        <template #body>
+        <template #body="slotProps">
           <Button
-            disabled="true"
+            @click="showEditProfessionalModal(slotProps.data)"
             icon="pi pi-user-edit"
             outlined
             rounded
@@ -138,6 +138,75 @@
         </div>
       </template>
     </DataTable>
+
+    <Dialog
+      v-model:visible="showProfessionalModal"
+      @hide="resetIsLoading()"
+      modal
+      maximizable
+      :style="{ width: '50vw' }"
+    >
+      <template #header>
+        <span>Editar Informações <span v-if="ProfessionalsStore.userInfo.id">- ID {{ ProfessionalsStore.userInfo.id }}</span> </span>
+      </template>
+      <TabView>
+        <TabPanel>
+          <template #header>
+            <i
+              class="pi pi-user mr-2"
+            />
+            <span>Usuário</span>
+          </template>
+          <ProgressSpinner
+            v-if="ProfessionalsStore.isLoadingUser"
+            class="flex md:align-items-center"
+          />
+          <div v-else>
+            <div class="container">
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="nome"
+                    v-model="ProfessionalsStore.userInfo.name"
+                  />
+                  <label for="nome">Nome</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="nickname"
+                    v-model="ProfessionalsStore.userInfo.nickname"
+                  />
+                  <label for="nickname">Nickname</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="email"
+                    v-model="ProfessionalsStore.userInfo.email"
+                  />
+                  <label for="email">email</label>
+                </span>
+              </div>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel>
+          <template #header>
+            <i
+              class="pi pi-users mr-2"
+            />
+            <span>Profissional</span>
+          </template>
+          <ProgressSpinner
+            v-if="ProfessionalsStore.isLoadingProfessional"
+            class="flex md:align-items-center"
+          />
+        </TabPanel>
+      </TabView>
+    </Dialog>
   </div>
 </template>
 
@@ -151,6 +220,7 @@ export default {
   data() {
     return {
       expandedRows: [],
+      showProfessionalModal: false,
     };
   },
   async created() {
@@ -166,6 +236,22 @@ export default {
       const formattedMonth = month.toString().padStart(2, '0');
       return `${formattedDay}/${formattedMonth}/${year}`;
     },
+    showEditProfessionalModal(data) {
+      const userId = data.id;
+      const professionalId = data.professional.id;
+      this.showProfessionalModal = !this.showProfessionalModal;
+      Promise.all([
+        this.ProfessionalsStore.getProfessionalById(professionalId),
+        this.ProfessionalsStore.getUserById(userId),
+      ]).then(() => {
+        this.ProfessionalsStore.isLoadingProfessional = false;
+        this.ProfessionalsStore.isLoadingUser = false;
+      });
+    },
+    resetIsLoading() {
+      this.ProfessionalsStore.isLoadingProfessional = true;
+      this.ProfessionalsStore.isLoadingUser = true;
+    },
   },
   computed: {
     ...mapStores(useProfessionalsStore),
@@ -175,5 +261,4 @@ export default {
 
 </script>
   <style lang="scss">
-
   </style>
