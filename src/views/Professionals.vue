@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-v-model-argument -->
 <template>
   <div>
     <div v-if="ProfessionalsStore.isLoadingProfessionals">
@@ -162,7 +161,7 @@
             class="flex md:align-items-center"
           />
           <div v-else>
-            <div class="container">
+            <div class="formgrid grid gap-4">
               <div class="child">
                 <span class="p-float-label">
                   <InputText
@@ -189,6 +188,71 @@
                   />
                   <label for="email">email</label>
                 </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="birthdate"
+                    v-model="ProfessionalsStore.userInfo.birthdate"
+                  />
+                  <label for="birthdate">Data de Nascimento</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="phone"
+                    v-model="ProfessionalsStore.userInfo.phone"
+                  />
+                  <label for="phone">Telefone</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="cpf"
+                    v-model="ProfessionalsStore.userInfo.cpf"
+                  />
+                  <label for="cpf">CPF</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="genre"
+                    v-model="ProfessionalsStore.userInfo.genre"
+                  />
+                  <label for="genre">Gênero</label>
+                </span>
+              </div>
+              <div class="child">
+                <span class="p-float-label">
+                  <InputText
+                    id="nationalIdCard"
+                    v-model="ProfessionalsStore.userInfo.nationalIdCard"
+                  />
+                  <label for="nationalIdCard">Identidate</label>
+                </span>
+              </div>
+              <div class="formgrid grid gap-5 ml-1">
+                <div>
+                  <div class="mb-3">
+                    Terms
+                  </div>
+                  <InputSwitch
+                    id="accepted_terms"
+                    v-model="ProfessionalsStore.userInfo.accepted_terms"
+                  />
+                </div>
+                <div>
+                  <div class="mb-3">
+                    Newsletter
+                  </div>
+                  <InputSwitch
+                    id="subscribe_newsletter"
+                    v-model="ProfessionalsStore.userInfo.subscribe_newsletter"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -261,4 +325,5 @@ export default {
 
 </script>
   <style lang="scss">
+
   </style>

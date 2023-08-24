@@ -28,5 +28,6 @@ module.exports = {
     'linebreak-style': 'off',
     'max-len': 'off',
     'no-console': 'off',
+    'vue/no-v-model-argument': 'off',
   },
 };
