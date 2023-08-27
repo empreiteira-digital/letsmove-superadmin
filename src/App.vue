@@ -27,9 +27,9 @@ export default {
     return {
       navItems: [
         {
-          label: 'Usuários',
+          label: 'Profissionais',
           icon: 'pi pi-fw pi-user',
-          to: '/professionals',
+          to: '/professionais',
         },
       ],
     };

@@ -154,7 +154,7 @@
             <i
               class="pi pi-user mr-2"
             />
-            <span>Usuário</span>
+            <span>Profissionais</span>
           </template>
           <ProgressSpinner
             v-if="ProfessionalsStore.isLoadingUser"
