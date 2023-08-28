@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
+import Tooltip from 'primevue/tooltip';
 
 import 'primeicons/primeicons.css';
 import StyleClass from 'primevue/styleclass';
@@ -17,5 +18,6 @@ createApp(App)
   .use(PrimeVue, { ripple: true })
   .use(router)
   .use(pinia)
+  .directive('tooltip', Tooltip)
   .directive('styleclass', StyleClass)
   .mount('#app');

@@ -44,15 +44,38 @@
         style="width: 5rem"
       />
       <Column
-        field="professional.name"
-        header="Nome"
-        style="width: 52%"
+        header="Tipo"
+        style="width: 5%; text-align: center;"
         sortable
-      />
+      >
+        <template #body="slotProps">
+          <i
+            v-if="slotProps.data.professional.cnpj"
+            class="pi pi-briefcase"
+            style="color: gray"
+            v-tooltip.top="'Pessoa Jurídica'"
+          />
+          <i
+            v-else
+            class="pi pi-user"
+            style="color: gray"
+            v-tooltip.top="'Pessoa Física'"
+          />
+        </template>
+      </Column>
+      <Column
+        header="Nome"
+        style="width: 42%"
+        sortable
+      >
+        <template #body="slotProps">
+          <span>{{ getProfessionalName(slotProps.data.professional.name || slotProps.data.professional.businessName) }}</span>
+        </template>
+      </Column>
       <Column
         field="professional.professionalPlan.planName"
         header="Plano"
-        style="width: 18%"
+        style="width: 15%"
         sortable
       />
       <Column
@@ -127,7 +150,7 @@
       </Column>
       <template #expansion="slotProps">
         <div>
-          <p><b>Nome:</b> {{ slotProps.data.professional.name }}</p>
+          <p><b>Nome:</b> {{ getProfessionalName(slotProps.data.professional.name || slotProps.data.professional.businessName) }}</p>
           <p><b>Plano:</b> {{ slotProps.data.professional.professionalPlan.planName }}</p>
           <p><b>CPF:</b> {{ GlobalStore.cpf(slotProps.data.cpf) }}</p>
           <p><b>CNPJ:</b> {{ GlobalStore.cnpj(slotProps.data.professional.cnpj) }}</p>
@@ -291,6 +314,12 @@ export default {
     await this.ProfessionalsStore.getProfessionals();
   },
   methods: {
+    getProfessionalName(name) {
+      return name.replace(
+        /\w\S*/g,
+        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+      );
+    },
     formatDate(dateString) {
       const dateObj = new Date(dateString);
       const day = dateObj.getUTCDate();
