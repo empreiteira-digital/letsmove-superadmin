@@ -29,7 +29,7 @@ export default {
         {
           label: 'Profissionais',
           icon: 'pi pi-fw pi-user',
-          to: '/professionais',
+          to: '/profissionais',
         },
       ],
     };
