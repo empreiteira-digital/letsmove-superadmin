@@ -185,72 +185,92 @@
           />
           <div v-else>
             <div class="formgrid grid gap-4">
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="nome"
                     v-model="ProfessionalsStore.userInfo.name"
                   />
                   <label for="nome">Nome</label>
                 </span>
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="nickname"
                     v-model="ProfessionalsStore.userInfo.nickname"
                   />
                   <label for="nickname">Nickname</label>
                 </span>
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="email"
                     v-model="ProfessionalsStore.userInfo.email"
                   />
                   <label for="email">email</label>
                 </span>
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="birthdate"
                     v-model="ProfessionalsStore.userInfo.birthdate"
                   />
                   <label for="birthdate">Data de Nascimento</label>
                 </span>
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="phone"
                     v-model="ProfessionalsStore.userInfo.phone"
                   />
                   <label for="phone">Telefone</label>
                 </span>
               </div>
-              <div class="child">
+              <div style="display: flex">
                 <span class="p-float-label">
                   <InputText
+                    :disabled="!ProfessionalsStore.isCPFEditable"
+                    style="width: 207px; margin-right: 0.5rem"
                     id="cpf"
                     v-model="ProfessionalsStore.userInfo.cpf"
                   />
-                  <label for="cpf">CPF</label>
                 </span>
+                <i
+                  v-if="!ProfessionalsStore.isCPFEditable"
+                  @click="changeCPFEditable()"
+                  style="color: #bc71eb"
+                  class="pi pi-pencil vertically-align"
+                />
+                <i
+                  v-if="ProfessionalsStore.isCPFEditable"
+                  @click="changeCPFEditable()"
+                  style="color: red"
+                  class="pi pi-lock vertically-align"
+                />
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="genre"
                     v-model="ProfessionalsStore.userInfo.genre"
                   />
                   <label for="genre">Gênero</label>
                 </span>
               </div>
-              <div class="child">
+              <div>
                 <span class="p-float-label">
                   <InputText
+                    class="input-text-size"
                     id="nationalIdCard"
                     v-model="ProfessionalsStore.userInfo.nationalIdCard"
                   />
@@ -345,6 +365,9 @@ export default {
       this.ProfessionalsStore.isLoadingProfessional = true;
       this.ProfessionalsStore.isLoadingUser = true;
     },
+    changeCPFEditable() {
+      this.ProfessionalsStore.isCPFEditable = !this.ProfessionalsStore.isCPFEditable;
+    },
   },
   computed: {
     ...mapStores(useProfessionalsStore),
@@ -354,5 +377,14 @@ export default {
 
 </script>
   <style lang="scss">
+
+  .input-text-size {
+    width: 230px;
+  }
+
+  .vertically-align {
+    display: flex;
+    align-items: center;
+  }
 
   </style>

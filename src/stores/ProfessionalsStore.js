@@ -10,6 +10,7 @@ const useProfessionalsStore = defineStore('Professionals', {
     isLoadingProfessionals: false,
     isLoadingProfessional: true,
     isLoadingUser: true,
+    isCPFEditable: false,
   }),
   // Methods
   actions: {
