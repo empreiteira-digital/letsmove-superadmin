@@ -217,32 +217,36 @@
               </div>
               <div>
                 <span class="p-float-label">
-                  <InputText
+                  <InputMask
                     class="input-text-size"
                     id="birthdate"
                     v-model="ProfessionalsStore.userInfo.birthdate"
+                    mask="99/99/9999"
                   />
                   <label for="birthdate">Data de Nascimento</label>
                 </span>
               </div>
               <div>
                 <span class="p-float-label">
-                  <InputText
+                  <InputMask
                     class="input-text-size"
                     id="phone"
                     v-model="ProfessionalsStore.userInfo.phone"
+                    mask="(99) 99999-9999"
                   />
                   <label for="phone">Telefone</label>
                 </span>
               </div>
               <div style="display: flex">
                 <span class="p-float-label">
-                  <InputText
+                  <InputMask
                     :disabled="!ProfessionalsStore.isCPFEditable"
                     style="width: 207px; margin-right: 0.5rem"
                     id="cpf"
+                    mask="999.999.999-99"
                     v-model="ProfessionalsStore.userInfo.cpf"
                   />
+                  <label for="cpf">CPF</label>
                 </span>
                 <i
                   v-if="!ProfessionalsStore.isCPFEditable"
@@ -259,10 +263,13 @@
               </div>
               <div>
                 <span class="p-float-label">
-                  <InputText
+                  <Dropdown
                     class="input-text-size"
                     id="genre"
                     v-model="ProfessionalsStore.userInfo.genre"
+                    option-label="label"
+                    option-value="value"
+                    :options="genreOptions"
                   />
                   <label for="genre">Gênero</label>
                 </span>
@@ -313,6 +320,20 @@
           />
         </TabPanel>
       </TabView>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          @click="console.log('cancel')"
+          text
+        />
+        <Button
+          label="Save"
+          icon="pi pi-check"
+          @click="console.log('save')"
+          autofocus
+        />
+      </template>
     </Dialog>
   </div>
 </template>
@@ -328,6 +349,11 @@ export default {
     return {
       expandedRows: [],
       showProfessionalModal: false,
+      genreOptions: [
+        { label: 'Masculino', value: 'male' },
+        { label: 'Feminino', value: 'female' },
+        { label: 'Outro', value: 'other' },
+      ],
     };
   },
   async created() {
