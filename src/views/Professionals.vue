@@ -21,11 +21,11 @@
       :value="ProfessionalsStore.professionals"
       table-style="min-width: 50rem"
       paginator
-      :rows="10"
+      :rows="200"
       :loading="ProfessionalsStore.isLoading"
       v-model:expandedRows="expandedRows"
       paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :rows-per-page-options="[10, 20, 30, 40, 50]"
+      :rows-per-page-options="[200, 300, 400, 400, 600]"
       current-page-report-template="Mostrando {first} de {last} do total de {totalRecords} profissionais"
     >
       <template #header>
