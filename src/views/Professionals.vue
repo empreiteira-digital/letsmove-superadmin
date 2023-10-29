@@ -140,7 +140,7 @@
             class="mr-2"
           />
           <Button
-            disabled="true"
+            @click="goPageProfessional(slotProps.data)"
             icon="pi pi-external-link"
             outlined
             rounded
@@ -386,6 +386,10 @@ export default {
         this.ProfessionalsStore.isLoadingProfessional = false;
         this.ProfessionalsStore.isLoadingUser = false;
       });
+    },
+    async goPageProfessional(data) {
+      const professionalId = data.professional.id;
+      await this.ProfessionalsStore.getTokenProfessional(professionalId);
     },
     resetIsLoading() {
       this.ProfessionalsStore.isLoadingProfessional = true;

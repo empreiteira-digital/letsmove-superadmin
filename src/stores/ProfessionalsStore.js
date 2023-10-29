@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia';
-import { findProfessionals, findProfessionalById, findUserById } from '@/api/SuperAdmin';
+import {
+  findProfessionals,
+  findProfessionalById,
+  findUserById,
+  getTokenProfessional,
+} from '@/api/SuperAdmin';
 
 const useProfessionalsStore = defineStore('Professionals', {
   // Data
@@ -42,6 +47,14 @@ const useProfessionalsStore = defineStore('Professionals', {
         console.error(e);
       } finally {
         this.isLoadingUser = false;
+      }
+    },
+    async getTokenProfessional(id) {
+      try {
+        const user = await getTokenProfessional(id);
+        window.open(`${import.meta.env.VITE_LM_DASHBOARD_URL}/login-admin/${id}?token=${user.tokenLoginAdmin}`, '_blank');
+      } catch (e) {
+        console.error(e);
       }
     },
   },

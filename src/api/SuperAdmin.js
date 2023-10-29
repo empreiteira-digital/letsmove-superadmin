@@ -19,3 +19,9 @@ export const findUserById = (id) => superAdminInstance.get(
 ).then(
   (response) => response.data,
 ).catch((err) => console.error(err));
+
+export const getTokenProfessional = (id) => superAdminInstance.get(
+  `/users/redirect/${id}`,
+).then(
+  (response) => response.data.user,
+).catch((err) => console.error(err));
