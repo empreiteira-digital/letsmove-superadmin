@@ -52,7 +52,7 @@ const useProfessionalsStore = defineStore('Professionals', {
     async getTokenProfessional(id) {
       try {
         const user = await getTokenProfessional(id);
-        window.open(`${import.meta.env.VITE_LM_DASHBOARD_URL}/login-admin/${id}?token=${user.tokenLoginAdmin}`, '_blank');
+        window.open(`${import.meta.env.VITE_LM_DASHBOARD_URL}/login-admin?id=${id}&token=${user.tokenLoginAdmin}`, '_blank');
       } catch (e) {
         console.error(e);
       }
