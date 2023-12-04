@@ -1,27 +1,55 @@
 import axios from 'axios';
 
-const superAdminInstance = axios.create({ baseURL: import.meta.env.VITE_LM_BACKEND_URL });
+const superAdminInstance = axios.create({
+  baseURL: import.meta.env.VITE_LM_BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
 
-export const findProfessionals = () => superAdminInstance.get(
-  '/superadmin/professionals',
-).then(
-  (response) => response.data,
-).catch((err) => console.error(err));
+superAdminInstance.interceptors.request.use(
+  (config) => {
+    const newConfig = { ...config };
 
-export const findProfessionalById = (id) => superAdminInstance.get(
-  `/superadmin/professionals/${id}`,
-).then(
-  (response) => response.data,
-).catch((err) => console.error(err));
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      newConfig.headers = {
+        ...newConfig.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    return newConfig;
+  },
+  (error) => Promise.reject(error),
+);
 
-export const findUserById = (id) => superAdminInstance.get(
-  `/superadmin/users/${id}`,
-).then(
-  (response) => response.data,
-).catch((err) => console.error(err));
+const makeRequest = (method, url, data = null) => superAdminInstance[method](url, data)
+  .then((response) => response.data)
+  .catch((err) => {
+    if (err.response && err.response.status === 401) {
+      window.location.href = '/login';
+    }
+    console.error(err);
+    return false;
+  });
 
-export const getTokenProfessional = (id) => superAdminInstance.get(
-  `/users/redirect/${id}`,
-).then(
-  (response) => response.data.user,
-).catch((err) => console.error(err));
+export const login = (data) => makeRequest('post', '/auth/admin/signin', data);
+
+export const findProfessionals = () => makeRequest('get', '/superadmin/professionals');
+
+export const findProfessionalById = (id) => makeRequest('get', `/superadmin/professionals/${id}`);
+
+export const findUserById = (id) => makeRequest('get', `/superadmin/users/${id}`);
+
+export const getTokenProfessional = (id) => makeRequest('get', `/superadmin/users/redirect/${id}`).then((data) => data.user);
+
+export const findAdmins = () => makeRequest('get', '/admin');
+
+export const findAdminById = (id) => makeRequest('get', `/admin/${id}`);
+
+export const updateAdmin = (id, data) => makeRequest('put', `/admin/${id}`, data);
+
+export const createAdmin = (data) => makeRequest('post', '/admin', data);
+
+export const deleteAdmin = (id) => makeRequest('delete', `/admin/${id}`);

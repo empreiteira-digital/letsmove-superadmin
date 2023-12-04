@@ -8890,3 +8890,6 @@
   background: #d9d8d9;
   border-color: #d9d8d9;
 }
+.v-toast.v-toast--top {
+  z-index: 999999;
+}

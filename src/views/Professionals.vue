@@ -24,6 +24,9 @@
       :rows="200"
       :loading="ProfessionalsStore.isLoading"
       v-model:expandedRows="expandedRows"
+      v-model:filters="filters"
+      filter-display="row"
+      :global-filter-fields="['professional.name']"
       paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rows-per-page-options="[200, 300, 400, 400, 600]"
       current-page-report-template="Mostrando {first} de {last} do total de {totalRecords} profissionais"
@@ -31,9 +34,18 @@
       <template #header>
         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
           <span class="text-xl text-900 font-bold">Profissionais</span>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search" />
+            <InputText
+              v-model="filters['global'].value"
+              placeholder="Pesquisar"
+            />
+          </span>
           <Button
             @click="ProfessionalsStore.getProfessionals"
             icon="pi pi-refresh"
+            label="Atualizar lista"
+            class="mr-3"
             rounded
             raised
           />
@@ -44,6 +56,7 @@
         style="width: 5rem"
       />
       <Column
+        field="professional.cnpj"
         header="Tipo"
         style="width: 5%; text-align: center;"
         sortable
@@ -64,6 +77,7 @@
         </template>
       </Column>
       <Column
+        field="professional.name"
         header="Nome"
         style="width: 42%"
         sortable
@@ -112,6 +126,7 @@
         </template>
       </Column>
       <Column
+        field="professional.createdAt"
         header="Cadastrado em"
         style="width: 5%; text-align: center;"
         sortable
@@ -348,6 +363,11 @@ export default {
   data() {
     return {
       expandedRows: [],
+      filters: {
+        global: {
+          value: '',
+        },
+      },
       showProfessionalModal: false,
       genreOptions: [
         { label: 'Masculino', value: 'male' },

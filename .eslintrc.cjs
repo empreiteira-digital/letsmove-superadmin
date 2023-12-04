@@ -29,5 +29,6 @@ module.exports = {
     'max-len': 'off',
     'no-console': 'off',
     'vue/no-v-model-argument': 'off',
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
   },
 };
