@@ -29,13 +29,13 @@
           >
             {{ error }}
           </div>
-          <div class="signup-link">
+          <!-- <div class="signup-link">
             <router-link
               to="/esqueceu-senha"
             >
               Esqueceu a senha?
             </router-link>
-          </div>
+          </div> -->
           <div v-if="AuthStore.isLoadingAdmin">
             <h2>
               Autenticando...
