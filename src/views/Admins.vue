@@ -116,7 +116,6 @@
 
     <Dialog
       v-model:visible="showAdminModal"
-      @hide="resetIsLoading()"
       modal
       maximizable
       :style="{ width: '50vw' }"
@@ -172,29 +171,55 @@
                 <label for="email">email</label>
               </span>
             </div>
-            <div>
+            <div style="display: flex">
               <span class="p-float-label">
                 <InputText
-                  type="password"
+                  :type="showPassword ? 'text' : 'password'"
                   class="input-text-size"
                   id="password"
+                  style="width: 207px; margin-right: 0.5rem"
                   :required="newAdmin"
                   v-model="password"
                 />
                 <label for="password">Senha</label>
               </span>
+              <i
+                v-if="!showPassword"
+                @click="showPasswordText()"
+                style="color: #bc71eb"
+                class="pi pi-eye-slash vertically-align"
+              />
+              <i
+                v-else
+                @click="showPasswordText()"
+                style="color: red"
+                class="pi pi-eye vertically-align"
+              />
             </div>
-            <div>
+            <div style="display: flex">
               <span class="p-float-label">
                 <InputText
-                  type="password"
+                  :type="showConfirmPassword ? 'text' : 'password'"
                   class="input-text-size"
                   id="confirmPassword"
+                  style="width: 207px; margin-right: 0.5rem"
                   :required="newAdmin"
                   v-model="confirmPassword"
                 />
                 <label for="confirmPassword">Confirme a senha</label>
               </span>
+              <i
+                v-if="!showConfirmPassword"
+                @click="showConfirmPasswordText()"
+                style="color: #bc71eb"
+                class="pi pi-eye-slash vertically-align"
+              />
+              <i
+                v-else
+                @click="showConfirmPasswordText()"
+                style="color: red"
+                class="pi pi-eye vertically-align"
+              />
             </div>
           </div>
           <div
@@ -231,7 +256,6 @@
     </Dialog>
     <Dialog
       v-model:visible="showAdminDeleteModal"
-      @hide="resetIsLoading()"
       modal
       maximizable
       :style="{ width: '50vw' }"
@@ -286,6 +310,8 @@ export default {
       newAdmin: false,
       password: '',
       confirmPassword: '',
+      showPassword: false,
+      showConfirmPassword: false,
       error: null,
     };
   },
@@ -304,12 +330,12 @@ export default {
     },
     showEditAdminModal(data) {
       const adminId = data.id;
-      this.showAdminModal = !this.showAdminModal;
+      this.showAdminModal = true;
       this.AdminsStore.getAdminById(adminId);
     },
     showAddAdminModal() {
       this.newAdmin = true;
-      this.showAdminModal = !this.showAdminModal;
+      this.showAdminModal = true;
     },
     showDeleteAdminModal(data) {
       this.AdminsStore.getAdminById(data.id);
@@ -400,8 +426,11 @@ export default {
         });
       }
     },
-    resetIsLoading() {
-      this.AdminsStore.isLoadingAdmin = true;
+    showPasswordText() {
+      this.showPassword = !this.showPassword;
+    },
+    showConfirmPasswordText() {
+      this.showConfirmPassword = !this.showConfirmPassword;
     },
   },
   computed: {
